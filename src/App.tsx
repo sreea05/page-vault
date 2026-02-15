@@ -45,6 +45,10 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
+  const handleSettingsSave = (settings: { darkMode: boolean }) => {
+    console.log("Settings saved:", settings);
+  };
+
   useEffect(() => {
     loadFiles();
   }, []);
@@ -169,6 +173,11 @@ export default function App() {
     };
   }, [activeTab]);
 
+  const handleDialogClose = () => {
+    handleSettingsSave({ darkMode });
+    setSettingsOpen(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -288,8 +297,11 @@ export default function App() {
           </TableContainer>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setSettingsOpen(false)} color="primary">
-            Close
+          <Button onClick={handleDialogClose} color="primary">
+            Save & Close
+          </Button>
+          <Button onClick={() => setSettingsOpen(false)} color="secondary">
+            Discard
           </Button>
         </DialogActions>
       </Dialog>
