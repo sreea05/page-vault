@@ -5,7 +5,6 @@ import {
   createTheme,
   CssBaseline,
   Box,
-  Typography,
   Paper,
   Tabs,
   Tab,
@@ -40,10 +39,10 @@ type TabData = { id: string; title: string; content: string };
 export default function App() {
   const [files, setFiles] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-  const [tabs, setTabs] = useState<TabData[]>([]); // Changed: Single tabs array
-  const [activeTab, setActiveTab] = useState<string | null>(null); // Track active tab
+  const [tabs, setTabs] = useState<TabData[]>([]);
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const [darkMode, setDarkMode] = useState(true);
-  const [settingsOpen, setSettingsOpen] = useState(false); // State for dialog visibility
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
@@ -175,10 +174,9 @@ export default function App() {
       <CssBaseline />
       <Box display="flex" flexDirection="column" height="100vh">
         <AppBar position="static">
-          <Toolbar sx={{ justifyContent: "space-between" }}>
-            <Typography>HTML Viewer</Typography>
+          <Toolbar sx={{ justifyContent: "flex-end" }}>
             <IconButton onClick={() => setSettingsOpen(true)} color="inherit">
-              <SettingsIcon /> {/* Gear icon for settings */}
+              <SettingsIcon /> {/* Settings icon on the right */}
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -272,7 +270,6 @@ export default function App() {
                     <Switch checked={darkMode} onChange={() => setDarkMode((prev) => !prev)} />
                   </TableCell>
                 </TableRow>
-                {/* Add more settings here if needed */}
               </TableBody>
             </Table>
           </TableContainer>
