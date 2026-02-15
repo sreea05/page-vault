@@ -14,13 +14,23 @@ import {
   Toolbar,
   TextField,
   Breadcrumbs,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
 } from "@mui/material";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import FolderIcon from "@mui/icons-material/Folder";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseIcon from "@mui/icons-material/Close";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const BASE_PATH = "/home/tmp";
 
@@ -30,9 +40,10 @@ type TabData = { id: string; title: string; content: string };
 export default function App() {
   const [files, setFiles] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-  const [tabs, setTabs] = useState<TabData[]>([]);  // Changed: Single tabs array
-  const [activeTab, setActiveTab] = useState<string | null>(null);  // Track active tab
+  const [tabs, setTabs] = useState<TabData[]>([]); // Changed: Single tabs array
+  const [activeTab, setActiveTab] = useState<string | null>(null); // Track active tab
   const [darkMode, setDarkMode] = useState(true);
+  const [settingsOpen, setSettingsOpen] = useState(false); // State for dialog visibility
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
@@ -108,7 +119,7 @@ export default function App() {
             itemId={full}
             label={name}
             slots={{ icon: InsertDriveFileIcon }}
-            onClick={() => openFile(full)}  // Removed groupId
+            onClick={() => openFile(full)} // Removed groupId
           />
         );
 
@@ -166,8 +177,8 @@ export default function App() {
         <AppBar position="static">
           <Toolbar sx={{ justifyContent: "space-between" }}>
             <Typography>HTML Viewer</Typography>
-            <IconButton onClick={() => setDarkMode((d) => !d)} color="inherit">
-              {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            <IconButton onClick={() => setSettingsOpen(true)} color="inherit">
+              <SettingsIcon /> {/* Gear icon for settings */}
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -247,6 +258,31 @@ export default function App() {
           </Box>
         </Box>
       </Box>
+
+      {/* Settings Dialog */}
+      <Dialog open={settingsOpen} onClose={() => setSettingsOpen(false)}>
+        <DialogTitle>Settings</DialogTitle>
+        <DialogContent>
+          <TableContainer>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Dark Mode</TableCell>
+                  <TableCell align="right">
+                    <Switch checked={darkMode} onChange={() => setDarkMode((prev) => !prev)} />
+                  </TableCell>
+                </TableRow>
+                {/* Add more settings here if needed */}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSettingsOpen(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </ThemeProvider>
   );
 }
