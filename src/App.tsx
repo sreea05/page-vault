@@ -14,7 +14,6 @@ import {
   Toolbar,
   TextField,
   Breadcrumbs,
-  Link,
 } from "@mui/material";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import FolderIcon from "@mui/icons-material/Folder";
@@ -288,7 +287,7 @@ export default function App() {
                         {activeTab.id
                           .split(/[/\\]/)
                           .map((part, i) => (
-                            <Link key={i}>{part}</Link>
+                            <span key={i}>{part}</span>
                           ))}
                       </Breadcrumbs>
                       <iframe
