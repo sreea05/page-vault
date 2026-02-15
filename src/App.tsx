@@ -258,7 +258,20 @@ export default function App() {
       </Box>
 
       {/* Settings Dialog */}
-      <Dialog open={settingsOpen} onClose={() => setSettingsOpen(false)}>
+      <Dialog
+        open={settingsOpen}
+        onClose={(_event, reason) => {
+          // Close only if not triggered by the backdrop click
+          if (reason !== 'backdropClick') {
+            setSettingsOpen(false);
+          }
+        }}
+        slotProps={{
+          backdrop: {
+            invisible: true,  // Prevent backdrop click from closing the dialog
+          },
+        }}
+      >
         <DialogTitle>Settings</DialogTitle>
         <DialogContent>
           <TableContainer>
