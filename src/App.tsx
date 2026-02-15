@@ -26,14 +26,12 @@ const BASE_PATH = "/home/tmp";
 
 type FileTree = { [key: string]: FileTree | null };
 type TabData = { id: string; title: string; content: string };
-type TabGroup = { id: string; tabs: TabData[]; activeTab: string | null };
 
 export default function App() {
   const [files, setFiles] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-  const [groups, setGroups] = useState<TabGroup[]>([
-    { id: "g1", tabs: [], activeTab: null },
-  ]);
+  const [tabs, setTabs] = useState<TabData[]>([]);  // Changed: Single tabs array
+  const [activeTab, setActiveTab] = useState<string | null>(null);  // Track active tab
   const [darkMode, setDarkMode] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -50,20 +48,11 @@ export default function App() {
   }
 
   // Open a file when clicked from the file tree
-  async function openFile(file: string, groupId: string) {
-    const group = groups.find((g) => g.id === groupId);
-    const existingTab = group?.tabs.find((tab) => tab.id === file);
+  async function openFile(file: string) {
+    const existingTab = tabs.find((tab) => tab.id === file);
 
     if (existingTab) {
-      setGroups((prev) => {
-        const updated = prev.map((g) => {
-          if (g.id === groupId) {
-            return { ...g, activeTab: file }; // Activate the existing tab
-          }
-          return g;
-        });
-        return updated;
-      });
+      setActiveTab(file); // Activate the existing tab
       return;
     }
 
@@ -72,45 +61,20 @@ export default function App() {
       relativePath: file,
     });
 
-    setGroups((prev) => {
-      const updated = prev.map((g) => {
-        if (g.id === groupId) {
-          return {
-            ...g,
-            tabs: [
-              ...g.tabs,
-              {
-                id: file,
-                title: file.split(/[/\\]/).pop() || file,
-                content,
-              },
-            ],
-            activeTab: file, // Set the newly opened tab as active
-          };
-        }
-        return g;
-      });
-      return updated;
-    });
+    setTabs((prevTabs) => [
+      ...prevTabs,
+      { id: file, title: file.split(/[/\\]/).pop() || file, content },
+    ]);
+    setActiveTab(file); // Set the newly opened tab as active
   }
 
   // Close a tab
-  function closeTab(groupId: string, tabId: string) {
-    setGroups((prev) => {
-      const updated = prev.map((g) => {
-        if (g.id === groupId) {
-          const tabs = g.tabs.filter((t) => t.id !== tabId);
-          const activeTab = tabs.length > 0 ? tabs[0].id : null;
-          return {
-            ...g,
-            tabs,
-            activeTab,
-          };
-        }
-        return g;
-      });
-
-      return updated;
+  function closeTab(tabId: string) {
+    setTabs((prevTabs) => {
+      const updatedTabs = prevTabs.filter((tab) => tab.id !== tabId);
+      const newActiveTab = updatedTabs.length > 0 ? updatedTabs[0].id : null;
+      setActiveTab(newActiveTab);
+      return updatedTabs;
     });
   }
 
@@ -144,7 +108,7 @@ export default function App() {
             itemId={full}
             label={name}
             slots={{ icon: InsertDriveFileIcon }}
-            onClick={() => openFile(full, "g1")}
+            onClick={() => openFile(full)}  // Removed groupId
           />
         );
 
@@ -160,57 +124,40 @@ export default function App() {
     palette: { mode: darkMode ? "dark" : "light" },
   });
 
-useEffect(() => {
-  // Add keyboard event listener to cycle through tabs using Ctrl+Tab
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.ctrlKey) {
-      // Handle Ctrl+Tab to switch between tabs
-      if (event.key === "Tab") {
-        setGroups((prev) => {
-          return prev.map((group) => {
-            if (group.tabs.length > 0) {
-              const currentIndex = group.tabs.findIndex(
-                (tab) => tab.id === group.activeTab
-              );
-              const newIndex =
-                currentIndex === group.tabs.length - 1
-                  ? 0
-                  : currentIndex + 1;
-
-              return {
-                ...group,
-                activeTab: group.tabs[newIndex].id,
-              };
+  useEffect(() => {
+    // Add keyboard event listener to cycle through tabs using Ctrl+Tab
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey) {
+        // Handle Ctrl+Tab to switch between tabs
+        if (event.key === "Tab") {
+          setTabs((prevTabs) => {
+            if (prevTabs.length > 0) {
+              const currentIndex = prevTabs.findIndex((tab) => tab.id === activeTab);
+              const newIndex = currentIndex === prevTabs.length - 1 ? 0 : currentIndex + 1;
+              setActiveTab(prevTabs[newIndex].id);
             }
-            return group;
+            return prevTabs;
           });
-        });
-      }
+        }
 
-      // Handle Ctrl+w to close the active tab
-      if (event.key === "w") {
-        const activeGroup = groups.find(
-          (group) => group.activeTab !== null
-        );
-        if (activeGroup && activeGroup.activeTab) {
-          closeTab(activeGroup.id, activeGroup.activeTab);
+        // Handle Ctrl+w to close the active tab
+        if (event.key === "w" && activeTab) {
+          closeTab(activeTab);
         }
       }
-    }
-  };
+    };
 
-  // Attach the event listener to both the window and iframe document
-  window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
-  // If iframe is available, add event listener to it too
-  const iframeDoc = iframeRef.current?.contentWindow?.document;
-  iframeDoc?.addEventListener("keydown", handleKeyDown);
+    // If iframe is available, add event listener to it too
+    const iframeDoc = iframeRef.current?.contentWindow?.document;
+    iframeDoc?.addEventListener("keydown", handleKeyDown);
 
-  return () => {
-    window.removeEventListener("keydown", handleKeyDown);
-    iframeDoc?.removeEventListener("keydown", handleKeyDown);
-  };
-}, [groups]);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      iframeDoc?.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeTab]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -247,77 +194,56 @@ useEffect(() => {
             </Paper>
           </Box>
 
-          {/* Tab Groups */}
+          {/* Tabs */}
           <Box display="flex" flex={1} minWidth={0}>
-            {groups.map((group) => {
-              const activeTab = group.tabs.find((t) => t.id === group.activeTab);
-
-              return (
-                <Box
-                  key={group.id}
-                  flex={1}
-                  borderLeft="1px solid #444"
-                  display="flex"
-                  flexDirection="column"
-                  minWidth={0}
-                >
-                  <Tabs
-                    value={group.activeTab}
-                    onChange={(_, v) =>
-                      setGroups((prev) =>
-                        prev.map((g) =>
-                          g.id === group.id ? { ...g, activeTab: v } : g
-                        )
-                      )
+            <Box flex={1} borderLeft="1px solid #444" display="flex" flexDirection="column" minWidth={0}>
+              <Tabs
+                value={activeTab}
+                onChange={(_, newValue) => setActiveTab(newValue)}
+                variant="scrollable"
+              >
+                {tabs.map((tab) => (
+                  <Tab
+                    key={tab.id}
+                    value={tab.id}
+                    label={
+                      <Box display="flex" alignItems="center">
+                        {tab.title}
+                        <IconButton
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            closeTab(tab.id);
+                          }}
+                        >
+                          <CloseIcon fontSize="small" />
+                        </IconButton>
+                      </Box>
                     }
-                    variant="scrollable"
-                  >
-                    {group.tabs.map((tab) => (
-                      <Tab
-                        key={tab.id}
-                        value={tab.id}
-                        label={
-                          <Box display="flex" alignItems="center">
-                            {tab.title}
-                            <IconButton
-                              size="small"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                closeTab(group.id, tab.id);
-                              }}
-                            >
-                              <CloseIcon fontSize="small" />
-                            </IconButton>
-                          </Box>
-                        }
-                      />
-                    ))}
-                  </Tabs>
+                  />
+                ))}
+              </Tabs>
 
-                  {activeTab && (
-                    <>
-                      <Breadcrumbs sx={{ px: 2, py: 1 }}>
-                        {activeTab.id
-                          .split(/[/\\]/)
-                          .map((part, i) => (
-                            <span key={i}>{part}</span>
-                          ))}
-                      </Breadcrumbs>
-                      <iframe
-                        ref={iframeRef}
-                        srcDoc={activeTab.content}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          border: "none",
-                          flex: 1,
-                        }}
-                      />
-                    </>
-                  )}
-                </Box>
-              );
-            })}
+              {activeTab && (
+                <>
+                  <Breadcrumbs sx={{ px: 2, py: 1 }}>
+                    {activeTab.split(/[/\\]/).map((part, i) => (
+                      <span key={i}>{part}</span>
+                    ))}
+                  </Breadcrumbs>
+                  <iframe
+                    ref={iframeRef}
+                    srcDoc={tabs.find((tab) => tab.id === activeTab)?.content}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      border: "none",
+                      flex: 1,
+                    }}
+                  />
+                </>
+              )}
+            </Box>
           </Box>
         </Box>
       </Box>
