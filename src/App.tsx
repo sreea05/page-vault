@@ -160,10 +160,12 @@ export default function App() {
     palette: { mode: darkMode ? "dark" : "light" },
   });
 
-  useEffect(() => {
-    // Add keyboard event listener to cycle through tabs using Ctrl+Tab
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.key === "Tab") {
+useEffect(() => {
+  // Add keyboard event listener to cycle through tabs using Ctrl+Tab
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.ctrlKey) {
+      // Handle Ctrl+Tab to switch between tabs
+      if (event.key === "Tab") {
         setGroups((prev) => {
           return prev.map((group) => {
             if (group.tabs.length > 0) {
@@ -184,20 +186,31 @@ export default function App() {
           });
         });
       }
-    };
 
-    // Attach the event listener to both the window and iframe document
-    window.addEventListener("keydown", handleKeyDown);
+      // Handle Ctrl+w to close the active tab
+      if (event.key === "w") {
+        const activeGroup = groups.find(
+          (group) => group.activeTab !== null
+        );
+        if (activeGroup && activeGroup.activeTab) {
+          closeTab(activeGroup.id, activeGroup.activeTab);
+        }
+      }
+    }
+  };
 
-    // If iframe is available, add event listener to it too
-    const iframeDoc = iframeRef.current?.contentWindow?.document;
-    iframeDoc?.addEventListener("keydown", handleKeyDown);
+  // Attach the event listener to both the window and iframe document
+  window.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      iframeDoc?.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [groups]);
+  // If iframe is available, add event listener to it too
+  const iframeDoc = iframeRef.current?.contentWindow?.document;
+  iframeDoc?.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+    iframeDoc?.removeEventListener("keydown", handleKeyDown);
+  };
+}, [groups]);
 
   return (
     <ThemeProvider theme={theme}>
