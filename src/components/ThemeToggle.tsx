@@ -1,30 +1,26 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import { useEffect, useState } from "react"
 import { Sun, Moon } from "lucide-react"
-import { setTheme } from "../theme"
+import { toggleTheme } from "../theme"
 
 export function ThemeToggle() {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <button style={{ background: "none", border: "none", cursor: "pointer" }}>
-          <Sun size={18} />
-        </button>
-      </DropdownMenu.Trigger>
+  const [theme, setTheme] = useState<"light" | "dark">("light")
 
-      <DropdownMenu.Content
-        style={{
-          background: "var(--panel)",
-          border: "1px solid var(--border)",
-          padding: 6,
-        }}
-      >
-        <DropdownMenu.Item onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+  useEffect(() => {
+    const t = (document.documentElement.getAttribute("data-theme") as "light" | "dark") ?? "light"
+    setTheme(t)
+    const obs = () => setTheme((document.documentElement.getAttribute("data-theme") as "light" | "dark") ?? "light")
+    const mo = new MutationObserver(obs)
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] })
+    return () => mo.disconnect()
+  }, [])
+
+  return (
+    <button
+      onClick={() => toggleTheme()}
+      aria-label="Toggle theme"
+      style={{ background: "none", border: "none", cursor: "pointer", padding: 6 }}
+    >
+      {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
+    </button>
   )
 }

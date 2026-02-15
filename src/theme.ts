@@ -9,3 +9,10 @@ export function initTheme() {
   const saved = localStorage.getItem("theme") as Theme | null
   setTheme(saved ?? "light")
 }
+
+export function toggleTheme() {
+  const saved = (localStorage.getItem("theme") as Theme | null) ?? (document.documentElement.getAttribute("data-theme") as Theme | null)
+  const next: Theme = saved === "dark" ? "light" : "dark"
+  setTheme(next)
+  return next
+}
