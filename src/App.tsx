@@ -1,51 +1,70 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { Group, Panel, Separator } from "react-resizable-panels";
+import { useEffect, useState } from "react"
+import { fetchHtmlTree } from "./api"
+import { FileTree } from "./components/FileTree"
+import { PreviewTabs } from "./components/PreviewTabs"
+import { ThemeToggle } from "./components/ThemeToggle"
+import { FileNode } from "./types"
+import { initTheme } from "./theme"
+import "./styles.css"
 
-function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+export default function App() {
+  const [tree, setTree] = useState<FileNode[]>([])
+  const [tabs, setTabs] = useState<FileNode[]>([])
+  const [activeTab, setActiveTab] = useState<string | null>(null)
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  useEffect(() => {
+    initTheme()
+    fetchHtmlTree("/home/tmp").then(setTree)
+  }, [])
+
+  function openFile(file: FileNode) {
+    setTabs((prev) => {
+      if (prev.find((t) => t.id === file.id)) return prev
+      return [...prev, file]
+    })
+    setActiveTab(file.id)
+  }
+
+  function closeTab(id: string) {
+    const remaining = tabs.filter((t) => t.id !== id)
+    setTabs(remaining)
+    if (activeTab === id) {
+      setActiveTab(remaining[0]?.id ?? null)
+    }
   }
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <div className="header">
+        <div>HTML Explorer</div>
+        <ThemeToggle />
       </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
 
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
-  );
+      <Group orientation="horizontal">
+        <Panel defaultSize={25} minSize={15}>
+          <div className="sidebar">
+            <FileTree nodes={tree} onFileClick={openFile} />
+          </div>
+        </Panel>
+
+        <Separator className="resize-handle" />
+
+        <Panel defaultSize={75} minSize={30}>
+          {tabs.length > 0 ? (
+            <PreviewTabs
+              tabs={tabs}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              closeTab={closeTab}
+            />
+          ) : (
+            <div className="empty-state">
+              Select an HTML file to preview
+            </div>
+          )}
+        </Panel>
+      </Group>
+    </div>
+  )
 }
-
-export default App;
