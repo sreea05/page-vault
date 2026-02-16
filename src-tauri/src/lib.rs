@@ -42,6 +42,7 @@ fn read_html_file(base_path: String, relative_path: String) -> Result<String, St
 
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![get_html_files, read_html_file])
         .run(tauri::generate_context!())
         .expect("error running tauri");
