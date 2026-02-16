@@ -11,7 +11,6 @@ import { useAppStore } from "./store/useAppStore";
 import TopBar from "./components/TopBar";
 import Sidebar from "./components/Sidebar";
 import EditorArea from "./components/EditorArea";
-import SettingsDialog from "./components/SettingsDialog";
 
 export default function App() {
   const darkMode = useAppStore((s) => s.darkMode);
