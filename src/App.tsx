@@ -1,4 +1,12 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+  useDeferredValue,
+  memo,
+} from "react";
 import { invoke } from "@tauri-apps/api/core";
 import {
   ThemeProvider,
@@ -39,64 +47,102 @@ type TabData = { id: string; title: string; content: string };
 export default function App() {
   const [files, setFiles] = useState<string[]>([]);
   const [search, setSearch] = useState("");
+  const deferredSearch = useDeferredValue(search);
   const [tabs, setTabs] = useState<TabData[]>([]);
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [darkMode, setDarkMode] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const handleSettingsSave = (settings: { darkMode: boolean }) => {
-    console.log("Settings saved:", settings);
-  };
+  const fileCache = useRef(new Map<string, string>());
+
+  /* ---------------------- THEME ---------------------- */
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: { mode: darkMode ? "dark" : "light" },
+      }),
+    [darkMode]
+  );
+
+  /* ---------------------- LOAD FILES ---------------------- */
 
   useEffect(() => {
-    loadFiles();
+    invoke<string[]>("get_html_files", {
+      basePath: BASE_PATH,
+    }).then(setFiles);
   }, []);
 
-  // Load the list of files
-  async function loadFiles() {
-    const result = await invoke<string[]>("get_html_files", {
-      basePath: BASE_PATH,
-    });
-    setFiles(result);
-  }
+  /* ---------------------- OPEN FILE (CACHED) ---------------------- */
 
-  // Open a file when clicked from the file tree
-  async function openFile(file: string) {
-    const existingTab = tabs.find((tab) => tab.id === file);
+  const openFile = useCallback(
+    async (file: string) => {
+      const existing = tabs.find((t) => t.id === file);
+      if (existing) {
+        setActiveTab(file);
+        return;
+      }
 
-    if (existingTab) {
-      setActiveTab(file); // Activate the existing tab
-      return;
-    }
+      if (fileCache.current.has(file)) {
+        const content = fileCache.current.get(file)!;
+        setTabs((prev) => [
+          ...prev,
+          { id: file, title: file.split(/[/\\]/).pop()!, content },
+        ]);
+        setActiveTab(file);
+        return;
+      }
 
-    const content = await invoke<string>("read_html_file", {
-      basePath: BASE_PATH,
-      relativePath: file,
-    });
+      const content = await invoke<string>("read_html_file", {
+        basePath: BASE_PATH,
+        relativePath: file,
+      });
 
-    setTabs((prevTabs) => [
-      ...prevTabs,
-      { id: file, title: file.split(/[/\\]/).pop() || file, content },
-    ]);
-    setActiveTab(file); // Set the newly opened tab as active
-  }
+      fileCache.current.set(file, content);
 
-  // Close a tab
-  function closeTab(tabId: string) {
-    setTabs((prevTabs) => {
-      const updatedTabs = prevTabs.filter((tab) => tab.id !== tabId);
-      const newActiveTab = updatedTabs.length > 0 ? updatedTabs[0].id : null;
-      setActiveTab(newActiveTab);
-      return updatedTabs;
-    });
-  }
+      setTabs((prev) => [
+        ...prev,
+        { id: file, title: file.split(/[/\\]/).pop()!, content },
+      ]);
+      setActiveTab(file);
+    },
+    [tabs]
+  );
+
+  /* ---------------------- CLOSE TAB ---------------------- */
+
+  const closeTab = useCallback(
+    (tabId: string) => {
+      setTabs((prev) => {
+        const updated = prev.filter((t) => t.id !== tabId);
+        if (updated.length === 0) {
+          setActiveTab(null);
+        } else if (tabId === activeTab) {
+          setActiveTab(updated[0].id);
+        }
+        return updated;
+      });
+    },
+    [activeTab]
+  );
+
+  /* ---------------------- TAB MAP ---------------------- */
+
+  const tabsMap = useMemo(() => {
+    const map = new Map<string, TabData>();
+    tabs.forEach((t) => map.set(t.id, t));
+    return map;
+  }, [tabs]);
+
+  /* ---------------------- FILTER FILES ---------------------- */
 
   const filteredFiles = useMemo(() => {
     return files.filter((f) =>
-      f.toLowerCase().includes(search.toLowerCase())
+      f.toLowerCase().includes(deferredSearch.toLowerCase())
     );
-  }, [files, search]);
+  }, [files, deferredSearch]);
+
+  /* ---------------------- BUILD TREE ---------------------- */
 
   const tree: FileTree = useMemo(() => {
     const root: FileTree = {};
@@ -111,200 +157,265 @@ export default function App() {
     return root;
   }, [filteredFiles]);
 
-  function renderTree(node: FileTree, path = ""): React.ReactNode {
-    return Object.entries(node).map(([name, children]) => {
-      const full = path ? `${path}/${name}` : name;
-
-      if (!children)
-        return (
-          <TreeItem
-            key={full}
-            itemId={full}
-            label={name}
-            slots={{ icon: InsertDriveFileIcon }}
-            onClick={() => openFile(full)} // Removed groupId
-          />
-        );
-
-      return (
-        <TreeItem key={full} itemId={full} label={name} slots={{ icon: FolderIcon }}>
-          {renderTree(children, full)}
-        </TreeItem>
-      );
-    });
-  }
-
-  const theme = createTheme({
-    palette: { mode: darkMode ? "dark" : "light" },
-  });
+  /* ---------------------- KEYBOARD ---------------------- */
 
   useEffect(() => {
-    // Add keyboard event listener to cycle through tabs using Ctrl+Tab
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey) {
-        // Handle Ctrl+Tab to switch between tabs
-        if (event.key === "Tab") {
-          setTabs((prevTabs) => {
-            if (prevTabs.length > 0) {
-              const currentIndex = prevTabs.findIndex((tab) => tab.id === activeTab);
-              const newIndex = currentIndex === prevTabs.length - 1 ? 0 : currentIndex + 1;
-              setActiveTab(prevTabs[newIndex].id);
-            }
-            return prevTabs;
-          });
-        }
+    const handler = (event: KeyboardEvent) => {
+      if (!event.ctrlKey) return;
 
-        // Handle Ctrl+w to close the active tab
-        if (event.key === "w" && activeTab) {
-          closeTab(activeTab);
-        }
+      if (event.key === "Tab") {
+        setTabs((prev) => {
+          if (!prev.length) return prev;
+          const index = prev.findIndex((t) => t.id === activeTab);
+          const next = index === prev.length - 1 ? 0 : index + 1;
+          setActiveTab(prev[next].id);
+          return prev;
+        });
+      }
+
+      if (event.key === "w" && activeTab) {
+        closeTab(activeTab);
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    // If iframe is available, add event listener to it too
-    const iframeDoc = iframeRef.current?.contentWindow?.document;
-    iframeDoc?.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      iframeDoc?.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [activeTab]);
-
-  const handleDialogClose = () => {
-    handleSettingsSave({ darkMode });
-    setSettingsOpen(false);
-  };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [activeTab, closeTab]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box display="flex" flexDirection="column" height="100vh">
-        <AppBar position="static">
-          <Toolbar sx={{ justifyContent: "flex-end" }}>
-            <IconButton onClick={() => setSettingsOpen(true)} color="inherit">
-              <SettingsIcon /> {/* Settings icon on the right */}
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        <TopBar onSettings={() => setSettingsOpen(true)} />
 
         <Box display="flex" flex={1} minHeight={0}>
-          {/* Fixed Sidebar */}
-          <Box
-            sx={{
-              width: 280, // Fixed sidebar width
-              display: "flex",
-              flexDirection: "row",
-              flexShrink: 0,
-            }}
-          >
-            <Paper sx={{ flex: 1, p: 2, overflow: "auto" }}>
-              <TextField
-                size="small"
-                fullWidth
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <SimpleTreeView>{renderTree(tree)}</SimpleTreeView>
-            </Paper>
-          </Box>
+          <Sidebar
+            tree={tree}
+            search={search}
+            setSearch={setSearch}
+            openFile={openFile}
+          />
 
-          {/* Tabs */}
-          <Box display="flex" flex={1} minWidth={0}>
-            <Box flex={1} borderLeft="1px solid #444" display="flex" flexDirection="column" minWidth={0}>
-              <Tabs
-                value={activeTab}
-                onChange={(_, newValue) => setActiveTab(newValue)}
-                variant="scrollable"
-              >
-                {tabs.map((tab) => (
-                  <Tab
-                    key={tab.id}
-                    value={tab.id}
-                    label={
-                      <Box display="flex" alignItems="center">
-                        {tab.title}
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            closeTab(tab.id);
-                          }}
-                        >
-                          <CloseIcon fontSize="small" />
-                        </IconButton>
-                      </Box>
-                    }
-                  />
-                ))}
-              </Tabs>
-
-              {activeTab && (
-                <>
-                  <Breadcrumbs sx={{ px: 2, py: 1 }}>
-                    {activeTab.split(/[/\\]/).map((part, i) => (
-                      <span key={i}>{part}</span>
-                    ))}
-                  </Breadcrumbs>
-                  <iframe
-                    ref={iframeRef}
-                    srcDoc={tabs.find((tab) => tab.id === activeTab)?.content}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      border: "none",
-                      flex: 1,
-                    }}
-                  />
-                </>
-              )}
-            </Box>
-          </Box>
+          <EditorArea
+            tabs={tabs}
+            tabsMap={tabsMap}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            closeTab={closeTab}
+          />
         </Box>
       </Box>
 
-      {/* Settings Dialog */}
-      <Dialog
+      <SettingsDialog
         open={settingsOpen}
-        onClose={(_event, reason) => {
-          // Close only if not triggered by the backdrop click
-          if (reason !== 'backdropClick') {
-            setSettingsOpen(false);
-          }
+        currentDarkMode={darkMode}
+        onSave={(settings) => {
+          setDarkMode(settings.darkMode);
+          setSettingsOpen(false);
         }}
-        slotProps={{
-          backdrop: {
-            invisible: true,  // Prevent backdrop click from closing the dialog
-          },
+        onDiscard={() => {
+          setSettingsOpen(false);
         }}
-      >
-        <DialogTitle>Settings</DialogTitle>
-        <DialogContent>
-          <TableContainer>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Dark Mode</TableCell>
-                  <TableCell align="right">
-                    <Switch checked={darkMode} onChange={() => setDarkMode((prev) => !prev)} />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
-            Save & Close
-          </Button>
-          <Button onClick={() => setSettingsOpen(false)} color="secondary">
-            Discard
-          </Button>
-        </DialogActions>
-      </Dialog>
+      />
     </ThemeProvider>
   );
 }
+
+/* ================= COMPONENTS ================= */
+
+const TopBar = memo(({ onSettings }: { onSettings: () => void }) => (
+  <AppBar position="static">
+    <Toolbar sx={{ justifyContent: "flex-end" }}>
+      <IconButton onClick={onSettings} color="inherit">
+        <SettingsIcon />
+      </IconButton>
+    </Toolbar>
+  </AppBar>
+));
+
+const Sidebar = memo(
+  ({
+    tree,
+    search,
+    setSearch,
+    openFile,
+  }: {
+    tree: FileTree;
+    search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+    openFile: (file: string) => void;
+  }) => {
+    const renderTree = (node: FileTree, path = ""): React.ReactNode =>
+      Object.entries(node).map(([name, children]) => {
+        const full = path ? `${path}/${name}` : name;
+
+        if (!children)
+          return (
+            <TreeItem
+              key={full}
+              itemId={full}
+              label={name}
+              slots={{ icon: InsertDriveFileIcon }}
+              onClick={() => openFile(full)}
+            />
+          );
+
+        return (
+          <TreeItem
+            key={full}
+            itemId={full}
+            label={name}
+            slots={{ icon: FolderIcon }}
+          >
+            {renderTree(children, full)}
+          </TreeItem>
+        );
+      });
+
+    return (
+      <Box sx={{ width: 280, flexShrink: 0 }}>
+        <Paper sx={{ p: 2, overflow: "auto", height: "100%" }}>
+          <TextField
+            size="small"
+            fullWidth
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <SimpleTreeView>{renderTree(tree)}</SimpleTreeView>
+        </Paper>
+      </Box>
+    );
+  }
+);
+
+const EditorArea = memo(
+  ({
+    tabs,
+    tabsMap,
+    activeTab,
+    setActiveTab,
+    closeTab,
+  }: {
+    tabs: TabData[];
+    tabsMap: Map<string, TabData>;
+    activeTab: string | null;
+    setActiveTab: (id: string) => void;
+    closeTab: (id: string) => void;
+  }) => (
+    <Box flex={1} borderLeft="1px solid #444" display="flex" flexDirection="column">
+      <Tabs
+        value={activeTab}
+        onChange={(_, v) => setActiveTab(v)}
+        variant="scrollable"
+      >
+        {tabs.map((tab) => (
+          <Tab
+            key={tab.id}
+            value={tab.id}
+            label={
+              <Box display="flex" alignItems="center">
+                {tab.title}
+                <IconButton
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeTab(tab.id);
+                  }}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            }
+          />
+        ))}
+      </Tabs>
+
+      {activeTab && (
+        <>
+          <Breadcrumbs sx={{ px: 2, py: 1 }}>
+            {activeTab.split(/[/\\]/).map((p, i) => (
+              <span key={i}>{p}</span>
+            ))}
+          </Breadcrumbs>
+
+          <iframe
+            srcDoc={tabsMap.get(activeTab)?.content}
+            style={{ width: "100%", height: "100%", border: "none", flex: 1 }}
+          />
+        </>
+      )}
+    </Box>
+  )
+);
+
+/* ================= SETTINGS DIALOG ================= */
+
+type SettingsDialogProps = {
+  open: boolean;
+  currentDarkMode: boolean;
+  onSave: (settings: { darkMode: boolean }) => void;
+  onDiscard: () => void;
+};
+
+const SettingsDialog = memo(function SettingsDialog({
+  open,
+  currentDarkMode,
+  onSave,
+  onDiscard,
+}: SettingsDialogProps) {
+  const [localDarkMode, setLocalDarkMode] = useState(currentDarkMode);
+
+  // Sync when opened
+  useEffect(() => {
+    if (open) {
+      setLocalDarkMode(currentDarkMode);
+    }
+  }, [open, currentDarkMode]);
+
+  const handleClose = (
+    _event: object,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (reason === "backdropClick" || reason === "escapeKeyDown") {
+      return;
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Settings</DialogTitle>
+
+      <DialogContent>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>Dark Mode</TableCell>
+                <TableCell align="right">
+                  <Switch
+                    checked={localDarkMode}
+                    onChange={() => setLocalDarkMode((p) => !p)}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </DialogContent>
+
+      <DialogActions>
+        <Button
+          onClick={() => onSave({ darkMode: localDarkMode })}
+          color="primary"
+        >
+          Save
+        </Button>
+
+        <Button onClick={onDiscard} color="secondary">
+          Discard
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+});
