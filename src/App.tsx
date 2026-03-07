@@ -6,7 +6,7 @@ import {
   Box,
   LinearProgress,
 } from "@mui/material";
-import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from "react-resizable-panels";
+import { Group as PanelGroup, Panel, Separator as PanelSeparator } from "react-resizable-panels";
 import { useAppStore } from "./store/useAppStore";
 import TopBar from "./components/TopBar";
 import Sidebar from "./components/Sidebar";
@@ -60,7 +60,7 @@ export default function App() {
               </Box>
             </Panel>
 
-            <PanelResizeHandle
+            <PanelSeparator
               style={{
                 width: 5,
                 cursor: "col-resize",
