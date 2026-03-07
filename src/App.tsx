@@ -45,35 +45,54 @@ export default function App() {
 
         {loading && <LinearProgress sx={{ height: 2 }} />}
 
-        <Box flex={1} minHeight={0}>
-          <PanelGroup orientation="horizontal" style={{ height: "100%" }}>
-            <Panel defaultSize={28} minSize={18} maxSize={60}>
+        {/* Use display:flex here so PanelGroup stretches via cross-axis, not height:100% */}
+        <Box sx={{ flex: 1, minHeight: 0, display: "flex", overflow: "hidden" }}>
+          <PanelGroup orientation="horizontal" style={{ flex: 1 }}>
+            <Panel defaultSize={28} minSize={15} maxSize={65}>
+              {/* display:flex + flexDirection:column so Sidebar fills via flex, not height:100% */}
               <Box
                 sx={{
+                  display: "flex",
+                  flexDirection: "column",
                   height: "100%",
-                  overflowY: "auto",
                   borderRight: 1,
                   borderColor: "divider",
+                  overflow: "hidden",
                 }}
               >
                 <Sidebar />
               </Box>
             </Panel>
 
-            <PanelSeparator
-              style={{
-                width: 6,
-                cursor: "col-resize",
-                background: "transparent",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            />
+            <PanelSeparator>
+              <Box
+                sx={{
+                  width: 4,
+                  height: "100%",
+                  cursor: "col-resize",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: "divider",
+                  "&:hover": { bgcolor: "primary.light" },
+                  transition: "background-color 0.15s",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 2,
+                    height: 32,
+                    borderRadius: 1,
+                    bgcolor: "text.disabled",
+                    opacity: 0.5,
+                    pointerEvents: "none",
+                  }}
+                />
+              </Box>
+            </PanelSeparator>
 
             <Panel>
-              <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
                 <EditorArea />
               </Box>
             </Panel>
