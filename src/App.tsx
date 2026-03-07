@@ -5,8 +5,8 @@ import {
   CssBaseline,
   Box,
   LinearProgress,
-  Divider,
 } from "@mui/material";
+import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from "react-resizable-panels";
 import { useAppStore } from "./store/useAppStore";
 import TopBar from "./components/TopBar";
 import Sidebar from "./components/Sidebar";
@@ -25,6 +25,14 @@ export default function App() {
     () =>
       createTheme({
         palette: { mode: darkMode ? "dark" : "light" },
+        shape: { borderRadius: 8 },
+        components: {
+          MuiTab: {
+            styleOverrides: {
+              root: { minHeight: 40 },
+            },
+          },
+        },
       }),
     [darkMode]
   );
@@ -35,12 +43,40 @@ export default function App() {
       <Box display="flex" flexDirection="column" height="100vh">
         <TopBar />
 
-        {loading && <LinearProgress />}
+        {loading && <LinearProgress sx={{ height: 2 }} />}
 
-        <Box display="flex" flex={1} minHeight={0}>
-          <Sidebar />
-          <Divider orientation="vertical" flexItem />
-          <EditorArea />
+        <Box flex={1} minHeight={0}>
+          <PanelGroup orientation="horizontal" style={{ height: "100%" }}>
+            <Panel defaultSize={22} minSize={15} maxSize={45}>
+              <Box
+                sx={{
+                  height: "100%",
+                  overflowY: "auto",
+                  borderRight: 1,
+                  borderColor: "divider",
+                }}
+              >
+                <Sidebar />
+              </Box>
+            </Panel>
+
+            <PanelResizeHandle
+              style={{
+                width: 5,
+                cursor: "col-resize",
+                background: "transparent",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            />
+
+            <Panel>
+              <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                <EditorArea />
+              </Box>
+            </Panel>
+          </PanelGroup>
         </Box>
       </Box>
     </ThemeProvider>
