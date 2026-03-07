@@ -47,7 +47,7 @@ export default function App() {
 
         <Box flex={1} minHeight={0}>
           <PanelGroup orientation="horizontal" style={{ height: "100%" }}>
-            <Panel defaultSize={22} minSize={15} maxSize={45}>
+            <Panel defaultSize={28} minSize={18} maxSize={60}>
               <Box
                 sx={{
                   height: "100%",
@@ -62,12 +62,13 @@ export default function App() {
 
             <PanelSeparator
               style={{
-                width: 5,
+                width: 6,
                 cursor: "col-resize",
                 background: "transparent",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexShrink: 0,
               }}
             />
 
