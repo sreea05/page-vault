@@ -44,8 +44,9 @@ export default function EditorArea() {
           </Breadcrumbs>
 
           <iframe
+            key={active.id}
             sandbox=""
-            srcDoc={active.content}
+            src={active.filePath}
             style={{
               width: "100%",
               height: "100%",
