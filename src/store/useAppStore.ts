@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { invoke } from "@tauri-apps/api/core";
+import { convertFileSrc } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
+import { join } from "@tauri-apps/api/path";
 
 export type TabData = {
   id: string;
   title: string;
-  content: string;
+  filePath: string;
 };
 
 type AppState = {
@@ -24,8 +26,6 @@ type AppState = {
   setActiveTab: (id: string | null) => void;
   toggleDarkMode: () => void;
 };
-
-const fileCache = new Map<string, string>();
 
 export const useAppStore = create<AppState>((set, get) => ({
   basePath: null,
@@ -86,39 +86,24 @@ export const useAppStore = create<AppState>((set, get) => ({
     const { basePath, tabs } = get();
     if (!basePath) return;
 
+    // If the tab is already open, just focus it — no file I/O needed.
     if (tabs.find((t) => t.id === file)) {
       set({ activeTab: file });
       return;
     }
 
-    if (fileCache.has(file)) {
-      const content = fileCache.get(file)!;
-      set((state) => ({
-        tabs: [
-          ...state.tabs,
-          { id: file, title: file.split(/[/\\]/).pop()!, content },
-        ],
-        activeTab: file,
-      }));
-      return;
-    }
-
-    set({ loading: true });
-
-    const content = await invoke<string>("read_html_file", {
-      basePath,
-      relativePath: file,
-    });
-
-    fileCache.set(file, content);
+    // Build the absolute path and convert it to a pagevault:// URL.
+    // The custom URI scheme protocol registered in Rust serves the file directly
+    // from the filesystem, so no file content is ever sent through the IPC channel.
+    const fullPath = await join(basePath, file);
+    const filePath = convertFileSrc(fullPath, "pagevault");
 
     set((state) => ({
       tabs: [
         ...state.tabs,
-        { id: file, title: file.split(/[/\\]/).pop()!, content },
+        { id: file, title: file.split(/[/\\]/).pop()!, filePath },
       ],
       activeTab: file,
-      loading: false,
     }));
   },
 
