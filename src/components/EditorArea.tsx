@@ -88,16 +88,19 @@ export default function EditorArea() {
       </Tabs>
 
       {active && (
-        <iframe
-          key={active.id}
-          sandbox=""
-          src={active.filePath}
-          style={{
-            width: "100%",
-            flex: 1,
-            border: "none",
-          }}
-        />
+        <Box sx={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
+          <iframe
+            key={active.id}
+            sandbox=""
+            src={active.filePath}
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "none",
+              display: "block",
+            }}
+          />
+        </Box>
       )}
     </Box>
   );

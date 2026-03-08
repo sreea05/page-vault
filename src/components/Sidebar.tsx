@@ -52,7 +52,7 @@ export default function Sidebar() {
     return (
       <Box
         sx={{
-          height: "100%",
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -108,7 +108,7 @@ export default function Sidebar() {
   return (
     <Box
       sx={{
-        height: "100%",
+        flex: 1,
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",

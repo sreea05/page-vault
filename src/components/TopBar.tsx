@@ -11,11 +11,18 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import SettingsIcon from "@mui/icons-material/Settings";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import LockIcon from "@mui/icons-material/Lock";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useAppStore } from "../store/useAppStore";
 import { useState } from "react";
 import SettingsDialog from "./SettingsDialog";
 
-export default function TopBar() {
+interface TopBarProps {
+  sidebarOpen: boolean;
+  onToggleSidebar: () => void;
+}
+
+export default function TopBar({ sidebarOpen, onToggleSidebar }: TopBarProps) {
   const openFolder = useAppStore((s) => s.openFolder);
   const loadFiles = useAppStore((s) => s.loadFiles);
   const basePath = useAppStore((s) => s.basePath);
@@ -30,8 +37,18 @@ export default function TopBar() {
     <>
       <AppBar position="static" elevation={1}>
         <Toolbar sx={{ justifyContent: "space-between", minHeight: 52 }}>
-          {/* Left: branding + folder controls */}
+          {/* Left: sidebar toggle + branding + folder controls */}
           <Box display="flex" alignItems="center" gap={1}>
+            <Tooltip title={sidebarOpen ? "Hide sidebar" : "Show sidebar"}>
+              <IconButton onClick={onToggleSidebar} color="inherit" size="small">
+                {sidebarOpen ? (
+                  <MenuOpenIcon fontSize="small" />
+                ) : (
+                  <MenuIcon fontSize="small" />
+                )}
+              </IconButton>
+            </Tooltip>
+
             <LockIcon sx={{ fontSize: 20, opacity: 0.9 }} />
             <Typography
               variant="subtitle1"
