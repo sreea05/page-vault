@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <clipPath id="window-clip">
+      <rect width="1200" height="750" rx="10"/>
+    </clipPath>
+  </defs>
+
+  <!-- Window chrome -->
+  <rect width="1200" height="750" rx="10" fill="#1e1e2e" clip-path="url(#window-clip)"/>
+
+  <!-- ═══════════ TOP BAR ═══════════ -->
+  <rect x="0" y="0" width="1200" height="52" fill="#1565C0"/>
+
+  <!-- Hamburger icon (collapsed - no sidebar) -->
+  <rect x="12" y="16" width="16" height="2" fill="white" rx="1"/>
+  <rect x="12" y="22" width="16" height="2" fill="white" rx="1"/>
+  <rect x="12" y="28" width="16" height="2" fill="white" rx="1"/>
+
+  <!-- Lock icon -->
+  <rect x="44" y="19" width="14" height="10" rx="2" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <path d="M47 19 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <circle cx="51" cy="24" r="2" fill="rgba(255,255,255,0.9)"/>
+
+  <!-- App title -->
+  <text x="66" y="32" font-family="Roboto, Arial, sans-serif" font-size="15" font-weight="700" fill="white" letter-spacing="0.5">Page Vault</text>
+
+  <!-- Folder open icon -->
+  <g transform="translate(153, 14)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5">
+    <path d="M2 6 L2 18 L22 18 L22 8 L12 8 L10 6 Z"/>
+    <path d="M2 8 L22 8"/>
+  </g>
+
+  <!-- Settings gear icon (right) -->
+  <g transform="translate(1162, 14)">
+    <circle cx="12" cy="12" r="3" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+    <path d="M12 2 L13.5 5.5 L17 4.5 L17.5 8 L21 9 L19.5 12 L21 15 L17.5 16 L17 19.5 L13.5 18.5 L12 22 L10.5 18.5 L7 19.5 L6.5 16 L3 15 L4.5 12 L3 9 L6.5 8 L7 4.5 L10.5 5.5 Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  </g>
+
+  <!-- ═══════════ EDITOR AREA (full width, no sidebar) ═══════════ -->
+  <rect x="0" y="52" width="1200" height="698" fill="#121212"/>
+
+  <!-- Empty state centered content -->
+  <!-- Large folder icon, faint -->
+  <g transform="translate(516, 230)" opacity="0.18">
+    <rect x="0" y="20" width="168" height="120" rx="8" fill="#90caf9"/>
+    <rect x="0" y="0" width="80" height="40" rx="8" fill="#90caf9"/>
+    <rect x="0" y="20" width="168" height="120" rx="8" fill="#90caf9"/>
+  </g>
+
+  <!-- "Page Vault" heading -->
+  <text x="600" y="430" font-family="Roboto, Arial, sans-serif" font-size="24" font-weight="500" fill="rgba(255,255,255,0.6)" text-anchor="middle">Page Vault</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="465" font-family="Roboto, Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.3)" text-anchor="middle">Open a folder to get started</text>
+
+  <!-- Open Folder icon button -->
+  <g transform="translate(548, 495)">
+    <circle cx="52" cy="52" r="40" fill="none" stroke="#1976d2" stroke-width="1.5" opacity="0.4"/>
+    <g opacity="0.6" transform="translate(36, 36)">
+      <path d="M4 10 L4 26 L28 26 L28 14 L18 14 L16 10 Z" fill="none" stroke="#90caf9" stroke-width="2"/>
+      <path d="M4 14 L28 14" stroke="#90caf9" stroke-width="2"/>
+    </g>
+  </g>
+
+  <!-- Window border -->
+  <rect x="0" y="0" width="1200" height="750" rx="10" fill="none" stroke="#333" stroke-width="1"/>
+</svg>

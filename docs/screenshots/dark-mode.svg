@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <clipPath id="window-clip">
+      <rect width="1200" height="750" rx="10"/>
+    </clipPath>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Window chrome -->
+  <rect width="1200" height="750" rx="10" fill="#1e1e2e" clip-path="url(#window-clip)"/>
+
+  <!-- ═══════════ TOP BAR ═══════════ -->
+  <rect x="0" y="0" width="1200" height="52" fill="#1565C0"/>
+
+  <!-- Hamburger icon (open) -->
+  <rect x="12" y="18" width="16" height="2" fill="white" rx="1"/>
+  <rect x="12" y="24" width="16" height="2" fill="white" rx="1"/>
+  <rect x="18" y="30" width="10" height="2" fill="white" rx="1"/>
+
+  <!-- Lock icon -->
+  <rect x="44" y="19" width="14" height="10" rx="2" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <path d="M47 19 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <circle cx="51" cy="24" r="2" fill="rgba(255,255,255,0.9)"/>
+
+  <!-- App title -->
+  <text x="66" y="32" font-family="Roboto, Arial, sans-serif" font-size="15" font-weight="700" fill="white" letter-spacing="0.5">Page Vault</text>
+
+  <!-- Folder open icon -->
+  <g transform="translate(153, 14)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5">
+    <path d="M2 6 L2 18 L22 18 L22 8 L12 8 L10 6 Z"/>
+    <path d="M2 8 L22 8"/>
+  </g>
+
+  <!-- Chip: my-saved-pages -->
+  <rect x="182" y="17" width="130" height="20" rx="10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+  <text x="247" y="31" font-family="Roboto, Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle">my-saved-pages</text>
+
+  <!-- Refresh icon -->
+  <g transform="translate(322, 15)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M18 8 A8 8 0 1 0 20 13"/>
+    <path d="M18 4 L18 8 L22 8"/>
+  </g>
+
+  <!-- Settings gear icon (right side) -->
+  <g transform="translate(1162, 14)" fill="rgba(255,255,255,0.9)">
+    <circle cx="12" cy="12" r="3" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+    <path d="M12 2 L13.5 5.5 L17 4.5 L17.5 8 L21 9 L19.5 12 L21 15 L17.5 16 L17 19.5 L13.5 18.5 L12 22 L10.5 18.5 L7 19.5 L6.5 16 L3 15 L4.5 12 L3 9 L6.5 8 L7 4.5 L10.5 5.5 Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  </g>
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <rect x="0" y="52" width="280" height="698" fill="#1a1a2e"/>
+
+  <!-- Search bar -->
+  <rect x="10" y="66" width="260" height="34" rx="4" fill="#2a2a40" stroke="#3a3a55" stroke-width="1"/>
+  <!-- Search icon -->
+  <circle cx="30" cy="83" r="6" fill="none" stroke="#888" stroke-width="1.5"/>
+  <line x1="34" y1="87" x2="38" y2="91" stroke="#888" stroke-width="1.5"/>
+  <text x="48" y="88" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#666">Search files…</text>
+
+  <!-- File count -->
+  <text x="16" y="118" font-family="Roboto, Arial, sans-serif" font-size="11" fill="#888">24 files</text>
+
+  <!-- Divider -->
+  <line x1="0" y1="126" x2="280" y2="126" stroke="#2a2a40" stroke-width="1"/>
+
+  <!-- File tree -->
+  <!-- Folder: news -->
+  <g transform="translate(8, 134)">
+    <polygon points="0,5 5,0 10,5" fill="#888" transform="translate(4,0)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f0a500"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f0a500"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">news</text>
+  </g>
+
+  <!-- Indented: index.html (active file) -->
+  <rect x="0" y="160" width="280" height="24" fill="rgba(25, 118, 210, 0.25)"/>
+  <g transform="translate(28, 162)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#90caf9" stroke-width="1.2"/>
+    <line x1="3" y1="7" x2="7" y2="7" stroke="#90caf9" stroke-width="1"/>
+    <line x1="3" y1="10" x2="7" y2="10" stroke="#90caf9" stroke-width="1"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#90caf9">index.html</text>
+  </g>
+
+  <!-- Indented: article.html -->
+  <g transform="translate(28, 186)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <line x1="3" y1="7" x2="7" y2="7" stroke="#aaa" stroke-width="1"/>
+    <line x1="3" y1="10" x2="7" y2="10" stroke="#aaa" stroke-width="1"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">article.html</text>
+  </g>
+
+  <!-- Folder: docs -->
+  <g transform="translate(8, 210)">
+    <polygon points="0,5 5,0 10,5" fill="#888" transform="translate(4,0)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f0a500"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f0a500"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">docs</text>
+  </g>
+
+  <!-- Indented: readme.html -->
+  <g transform="translate(28, 226)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">readme.html</text>
+  </g>
+
+  <!-- Indented: guide.html -->
+  <g transform="translate(28, 250)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">guide.html</text>
+  </g>
+
+  <!-- Folder: archives (collapsed) -->
+  <g transform="translate(8, 274)">
+    <polygon points="0,0 5,5 10,0" fill="#888" transform="translate(4,3)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f0a500"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f0a500"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">archives</text>
+  </g>
+
+  <!-- More files (collapsed) -->
+  <g transform="translate(8, 298)">
+    <polygon points="0,0 5,5 10,0" fill="#888" transform="translate(4,3)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f0a500"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f0a500"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">tutorials</text>
+  </g>
+
+  <!-- ═══════════ DRAG HANDLE ═══════════ -->
+  <rect x="280" y="52" width="4" height="698" fill="#2a2a40"/>
+  <circle cx="282" cy="426" r="3" fill="#444"/>
+  <circle cx="282" cy="416" r="3" fill="#444"/>
+  <circle cx="282" cy="436" r="3" fill="#444"/>
+
+  <!-- ═══════════ EDITOR AREA ═══════════ -->
+  <rect x="284" y="52" width="916" height="698" fill="#121212"/>
+
+  <!-- Tabs bar -->
+  <rect x="284" y="52" width="916" height="40" fill="#1a1a2e"/>
+
+  <!-- Active tab -->
+  <rect x="284" y="52" width="170" height="40" fill="#121212"/>
+  <rect x="284" y="90" width="170" height="2" fill="#1976d2"/>
+  <text x="296" y="77" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#90caf9">index.html</text>
+  <!-- Close button for active tab -->
+  <line x1="437" y1="67" x2="443" y2="73" stroke="#888" stroke-width="1.2"/>
+  <line x1="443" y1="67" x2="437" y2="73" stroke="#888" stroke-width="1.2"/>
+
+  <!-- Second tab -->
+  <rect x="454" y="52" width="160" height="40" fill="#1a1a2e"/>
+  <text x="466" y="77" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#aaa">article.html</text>
+  <line x1="596" y1="67" x2="602" y2="73" stroke="#666" stroke-width="1.2"/>
+  <line x1="602" y1="67" x2="596" y2="73" stroke="#666" stroke-width="1.2"/>
+
+  <!-- Tab divider -->
+  <line x1="284" y1="92" x2="1200" y2="92" stroke="#2a2a40" stroke-width="1"/>
+
+  <!-- iFrame content area - simulating a news page -->
+  <rect x="284" y="93" width="916" height="657" fill="#f5f5f5"/>
+
+  <!-- Simulated HTML page content (light background) -->
+  <!-- Site header -->
+  <rect x="284" y="93" width="916" height="60" fill="#003366"/>
+  <text x="500" y="130" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="white">The Daily Herald</text>
+  <text x="900" y="122" font-family="Roboto, Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.6)" text-anchor="middle">Home  |  World  |  Tech  |  Science</text>
+
+  <!-- Hero article -->
+  <rect x="340" y="175" width="580" height="200" rx="4" fill="#ddd"/>
+  <rect x="340" y="175" width="580" height="200" rx="4" fill="url(#hero-gradient)"/>
+  <rect x="340" y="175" width="580" height="200" rx="4" fill="#ccc"/>
+  <text x="630" y="260" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#555" text-anchor="middle">[Article Hero Image]</text>
+  <text x="340" y="400" font-family="Georgia, serif" font-size="19" font-weight="bold" fill="#111">Breaking: Major Tech Advances Unveiled at Annual Summit</text>
+  <text x="340" y="425" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#777">March 8, 2026  ·  5 min read  ·  Technology</text>
+  <text x="340" y="450" font-family="Georgia, serif" font-size="14" fill="#444">Researchers presented groundbreaking findings in artificial intelligence and quantum computing,</text>
+  <text x="340" y="468" font-family="Georgia, serif" font-size="14" fill="#444">promising to reshape industries worldwide in the coming decade. Attendees praised the depth</text>
+  <text x="340" y="486" font-family="Georgia, serif" font-size="14" fill="#444">of technical detail and the breadth of applied research on display...</text>
+  <text x="340" y="515" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2" text-decoration="underline">Read more →</text>
+
+  <!-- Sidebar articles -->
+  <line x1="940" y1="153" x2="940" y2="750" stroke="#ddd" stroke-width="1"/>
+  <text x="960" y="185" font-family="Roboto, Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Related Stories</text>
+  <line x1="950" y1="193" x2="1180" y2="193" stroke="#eee" stroke-width="1"/>
+  <text x="960" y="213" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#444">› AI Policy Summit Draws</text>
+  <text x="960" y="229" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#444">  Global Leaders</text>
+  <text x="960" y="253" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#444">› Quantum Chip Breaks</text>
+  <text x="960" y="269" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#444">  Speed Record</text>
+  <text x="960" y="293" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#444">› Open Source Tools See</text>
+  <text x="960" y="309" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#444">  Surge in Adoption</text>
+
+  <!-- Window border -->
+  <rect x="0" y="0" width="1200" height="750" rx="10" fill="none" stroke="#333" stroke-width="1"/>
+</svg>
