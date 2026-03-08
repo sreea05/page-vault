@@ -16,6 +16,7 @@ import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutl
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import { useAppStore } from "../store/useAppStore";
+import EmptyState from "./EmptyState";
 
 type FileTree = { [key: string]: FileTree | null };
 
@@ -50,35 +51,24 @@ export default function Sidebar() {
 
   if (!basePath) {
     return (
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 2,
-          p: 3,
-          color: "text.secondary",
-        }}
-      >
-        <FolderOpenOutlinedIcon sx={{ fontSize: 56, opacity: 0.35 }} />
-        <Typography variant="body2" textAlign="center">
-          Open a folder to browse your HTML files
-        </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<FolderOpenOutlinedIcon />}
-          onClick={openFolder}
-        >
-          Open Folder
-        </Button>
-      </Box>
+      <EmptyState
+        icon={<FolderOpenOutlinedIcon sx={{ fontSize: 56, opacity: 0.35 }} />}
+        description="Open a folder to browse your HTML files"
+        action={
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<FolderOpenOutlinedIcon />}
+            onClick={openFolder}
+          >
+            Open Folder
+          </Button>
+        }
+      />
     );
   }
 
-  const renderTree = (node: FileTree, path = ""): any =>
+  const renderTree = (node: FileTree, path = ""): JSX.Element[] =>
     Object.entries(node).map(([name, children]) => {
       const full = path ? `${path}/${name}` : name;
 
