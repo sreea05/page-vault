@@ -2,6 +2,7 @@ import { Box, Tabs, Tab, IconButton, Tooltip, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import { useAppStore } from "../store/useAppStore";
+import EmptyState from "./EmptyState";
 
 export default function EditorArea() {
   const tabs = useAppStore((s) => s.tabs);
@@ -15,32 +16,24 @@ export default function EditorArea() {
 
   if (tabs.length === 0) {
     return (
-      <Box
-        flex={1}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        gap={2}
-        sx={{ color: "text.disabled" }}
-      >
-        <FolderOpenOutlinedIcon sx={{ fontSize: 72, opacity: 0.25 }} />
-        <Typography variant="h6" fontWeight={500} color="text.secondary">
-          Page Vault
-        </Typography>
-        <Typography variant="body2" color="text.disabled" textAlign="center">
-          {basePath
+      <EmptyState
+        icon={<FolderOpenOutlinedIcon sx={{ fontSize: 72, opacity: 0.25 }} />}
+        title="Page Vault"
+        description={
+          basePath
             ? "Select a file from the sidebar to preview it here"
-            : "Open a folder to get started"}
-        </Typography>
-        {!basePath && (
-          <Tooltip title="Open a folder">
-            <IconButton onClick={openFolder} size="large" color="primary">
-              <FolderOpenOutlinedIcon fontSize="large" />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Box>
+            : "Open a folder to get started"
+        }
+        action={
+          !basePath && (
+            <Tooltip title="Open a folder">
+              <IconButton onClick={openFolder} size="large" color="primary">
+                <FolderOpenOutlinedIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
+          )
+        }
+      />
     );
   }
 

@@ -73,11 +73,13 @@ export const useAppStore = create<AppState>((set, get) => ({
     const { basePath } = get();
     if (!basePath) return;
 
-    const files = await invoke<string[]>("get_html_files", {
-      basePath,
-    });
-
-    set({ files });
+    set({ loading: true });
+    try {
+      const files = await invoke<string[]>("get_html_files", { basePath });
+      set({ files });
+    } finally {
+      set({ loading: false });
+    }
   },
 
   /* ---------------- OPEN FILE ---------------- */
