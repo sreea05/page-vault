@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <clipPath id="window-clip">
+      <rect width="1200" height="750" rx="10"/>
+    </clipPath>
+  </defs>
+
+  <!-- Window chrome -->
+  <rect width="1200" height="750" rx="10" fill="#1e1e2e" clip-path="url(#window-clip)"/>
+
+  <!-- ═══════════ TOP BAR ═══════════ -->
+  <rect x="0" y="0" width="1200" height="52" fill="#1565C0"/>
+
+  <!-- Hamburger icon -->
+  <rect x="12" y="18" width="16" height="2" fill="white" rx="1"/>
+  <rect x="12" y="24" width="16" height="2" fill="white" rx="1"/>
+  <rect x="18" y="30" width="10" height="2" fill="white" rx="1"/>
+
+  <!-- Lock icon -->
+  <rect x="44" y="19" width="14" height="10" rx="2" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <path d="M47 19 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <circle cx="51" cy="24" r="2" fill="rgba(255,255,255,0.9)"/>
+
+  <!-- App title -->
+  <text x="66" y="32" font-family="Roboto, Arial, sans-serif" font-size="15" font-weight="700" fill="white" letter-spacing="0.5">Page Vault</text>
+
+  <!-- Folder open icon -->
+  <g transform="translate(153, 14)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5">
+    <path d="M2 6 L2 18 L22 18 L22 8 L12 8 L10 6 Z"/>
+    <path d="M2 8 L22 8"/>
+  </g>
+
+  <!-- Chip: my-saved-pages -->
+  <rect x="182" y="17" width="130" height="20" rx="10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+  <text x="247" y="31" font-family="Roboto, Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle">my-saved-pages</text>
+
+  <!-- Refresh icon -->
+  <g transform="translate(322, 15)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M18 8 A8 8 0 1 0 20 13"/>
+    <path d="M18 4 L18 8 L22 8"/>
+  </g>
+
+  <!-- Settings gear icon (right) -->
+  <g transform="translate(1162, 14)">
+    <circle cx="12" cy="12" r="3" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+    <path d="M12 2 L13.5 5.5 L17 4.5 L17.5 8 L21 9 L19.5 12 L21 15 L17.5 16 L17 19.5 L13.5 18.5 L12 22 L10.5 18.5 L7 19.5 L6.5 16 L3 15 L4.5 12 L3 9 L6.5 8 L7 4.5 L10.5 5.5 Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  </g>
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <rect x="0" y="52" width="280" height="698" fill="#1a1a2e"/>
+
+  <!-- Search bar (active with text) -->
+  <rect x="10" y="66" width="260" height="34" rx="4" fill="#2a2a40" stroke="#1976d2" stroke-width="1.5"/>
+  <!-- Search icon -->
+  <circle cx="30" cy="83" r="6" fill="none" stroke="#90caf9" stroke-width="1.5"/>
+  <line x1="34" y1="87" x2="38" y2="91" stroke="#90caf9" stroke-width="1.5"/>
+  <!-- Search text -->
+  <text x="48" y="88" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">auth</text>
+  <!-- Cursor in search -->
+  <rect x="76" y="74" width="2" height="16" fill="#90caf9" rx="1" opacity="0.8"/>
+  <!-- Clear button -->
+  <circle cx="258" cy="83" r="10" fill="#3a3a55"/>
+  <line x1="254" y1="79" x2="262" y2="87" stroke="#aaa" stroke-width="1.5"/>
+  <line x1="262" y1="79" x2="254" y2="87" stroke="#aaa" stroke-width="1.5"/>
+
+  <!-- File count (filtered) -->
+  <text x="16" y="118" font-family="Roboto, Arial, sans-serif" font-size="11" fill="#90caf9">3 of 24 files</text>
+
+  <!-- Divider -->
+  <line x1="0" y1="126" x2="280" y2="126" stroke="#2a2a40" stroke-width="1"/>
+
+  <!-- Filtered results: only "auth"-matching files -->
+  <!-- Folder: api-docs -->
+  <g transform="translate(8, 140)">
+    <polygon points="0,5 5,0 10,5" fill="#888" transform="translate(4,0)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f0a500"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f0a500"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">api-docs</text>
+  </g>
+
+  <!-- Match highlight in filename -->
+  <g transform="translate(28, 162)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#90caf9" stroke-width="1.2"/>
+    <!-- Highlighted match -->
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">
+      <tspan fill="#ccc">auth</tspan>.html
+    </text>
+    <!-- Highlight box under "auth" -->
+    <rect x="14" y="3" width="24" height="13" fill="rgba(144,202,249,0.2)" rx="2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">auth.html</text>
+  </g>
+
+  <!-- Folder: security (contains auth-related files) -->
+  <g transform="translate(8, 188)">
+    <polygon points="0,5 5,0 10,5" fill="#888" transform="translate(4,0)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f0a500"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f0a500"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ddd">security</text>
+  </g>
+
+  <!-- auth-flows.html -->
+  <g transform="translate(28, 212)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#90caf9" stroke-width="1.2"/>
+    <rect x="14" y="3" width="32" height="13" fill="rgba(144,202,249,0.2)" rx="2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">auth-flows.html</text>
+  </g>
+
+  <!-- oauth-auth.html -->
+  <g transform="translate(28, 236)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">oauth-</text>
+    <rect x="42" y="3" width="24" height="13" fill="rgba(144,202,249,0.2)" rx="2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#ccc">oauth-auth.html</text>
+  </g>
+
+  <!-- ═══════════ DRAG HANDLE ═══════════ -->
+  <rect x="280" y="52" width="4" height="698" fill="#2a2a40"/>
+  <circle cx="282" cy="426" r="3" fill="#444"/>
+  <circle cx="282" cy="416" r="3" fill="#444"/>
+  <circle cx="282" cy="436" r="3" fill="#444"/>
+
+  <!-- ═══════════ EDITOR AREA ═══════════ -->
+  <rect x="284" y="52" width="916" height="698" fill="#121212"/>
+
+  <!-- Tabs bar -->
+  <rect x="284" y="52" width="916" height="40" fill="#1a1a2e"/>
+
+  <!-- Active tab -->
+  <rect x="284" y="52" width="145" height="40" fill="#121212"/>
+  <rect x="284" y="90" width="145" height="2" fill="#1976d2"/>
+  <text x="296" y="77" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#90caf9">auth.html</text>
+  <line x1="409" y1="67" x2="415" y2="73" stroke="#888" stroke-width="1.2"/>
+  <line x1="415" y1="67" x2="409" y2="73" stroke="#888" stroke-width="1.2"/>
+
+  <!-- Tab divider -->
+  <line x1="284" y1="92" x2="1200" y2="92" stroke="#2a2a40" stroke-width="1"/>
+
+  <!-- iFrame content: API auth docs page (dark background simulated frame) -->
+  <rect x="284" y="93" width="916" height="657" fill="#fefefe"/>
+
+  <!-- Auth page content -->
+  <rect x="284" y="93" width="916" height="64" fill="#0f172a"/>
+  <text x="500" y="130" font-family="monospace" font-size="18" font-weight="bold" fill="#38bdf8" text-anchor="middle">Authentication — Developer Docs</text>
+
+  <!-- Nav bar in page -->
+  <rect x="284" y="157" width="916" height="40" fill="#f8f8f8"/>
+  <line x1="284" y1="197" x2="1200" y2="197" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="310" y="183" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">Overview</text>
+  <text x="380" y="183" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">API Keys</text>
+  <text x="440" y="183" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#666" font-weight="bold">OAuth 2.0</text>
+  <rect x="440" y="193" width="52" height="3" fill="#1976d2" rx="1"/>
+  <text x="506" y="183" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">JWT Tokens</text>
+
+  <!-- Auth page body -->
+  <text x="340" y="235" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#0f172a">OAuth 2.0 Authentication</text>
+  <text x="340" y="263" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">Page Vault supports the OAuth 2.0 authorization code flow to securely</text>
+  <text x="340" y="281" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">authenticate users. Start by registering your application to receive</text>
+  <text x="340" y="299" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">client credentials.</text>
+
+  <!-- Code block -->
+  <rect x="340" y="318" width="780" height="90" rx="6" fill="#1e293b"/>
+  <text x="360" y="342" font-family="monospace" font-size="12" fill="#94a3b8">// Step 1 – Redirect user to authorization endpoint</text>
+  <text x="360" y="360" font-family="monospace" font-size="12" fill="#7dd3fc">const</text>
+  <text x="390" y="360" font-family="monospace" font-size="12" fill="#e2e8f0"> authUrl = </text>
+  <text x="460" y="360" font-family="monospace" font-size="12" fill="#a3e635">`https://auth.example.com/oauth/authorize`</text>
+  <text x="360" y="378" font-family="monospace" font-size="12" fill="#94a3b8">// Step 2 – Exchange code for tokens</text>
+  <text x="360" y="396" font-family="monospace" font-size="12" fill="#7dd3fc">const</text>
+  <text x="390" y="396" font-family="monospace" font-size="12" fill="#e2e8f0"> tokens = await exchangeCode(code, clientSecret);</text>
+
+  <text x="340" y="432" font-family="Roboto, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0f172a">Response Format</text>
+  <text x="340" y="456" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">Upon successful authentication, you'll receive an access token and</text>
+  <text x="340" y="474" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">a refresh token in the following JSON envelope:</text>
+
+  <rect x="340" y="490" width="500" height="80" rx="6" fill="#1e293b"/>
+  <text x="360" y="512" font-family="monospace" font-size="12" fill="#e2e8f0">{"{"}</text>
+  <text x="380" y="530" font-family="monospace" font-size="12" fill="#a3e635">  "access_token": "eyJhbGciOiJSUzI1NiJ9…",</text>
+  <text x="380" y="548" font-family="monospace" font-size="12" fill="#a3e635">  "refresh_token": "dGhpcyBpcyBh…",</text>
+  <text x="380" y="562" font-family="monospace" font-size="12" fill="#94a3b8">  "expires_in": 3600</text>
+  <text x="360" y="576" font-family="monospace" font-size="12" fill="#e2e8f0">{"}"}</text>
+
+  <!-- Window border -->
+  <rect x="0" y="0" width="1200" height="750" rx="10" fill="none" stroke="#333" stroke-width="1"/>
+</svg>

@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <clipPath id="window-clip">
+      <rect width="1200" height="750" rx="10"/>
+    </clipPath>
+  </defs>
+
+  <!-- Window chrome -->
+  <rect width="1200" height="750" rx="10" fill="#f5f5f5" clip-path="url(#window-clip)"/>
+
+  <!-- ═══════════ TOP BAR ═══════════ -->
+  <rect x="0" y="0" width="1200" height="52" fill="#1565C0"/>
+
+  <!-- Hamburger icon -->
+  <rect x="12" y="18" width="16" height="2" fill="white" rx="1"/>
+  <rect x="12" y="24" width="16" height="2" fill="white" rx="1"/>
+  <rect x="18" y="30" width="10" height="2" fill="white" rx="1"/>
+
+  <!-- Lock icon -->
+  <rect x="44" y="19" width="14" height="10" rx="2" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <path d="M47 19 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  <circle cx="51" cy="24" r="2" fill="rgba(255,255,255,0.9)"/>
+
+  <!-- App title -->
+  <text x="66" y="32" font-family="Roboto, Arial, sans-serif" font-size="15" font-weight="700" fill="white" letter-spacing="0.5">Page Vault</text>
+
+  <!-- Folder open icon -->
+  <g transform="translate(153, 14)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5">
+    <path d="M2 6 L2 18 L22 18 L22 8 L12 8 L10 6 Z"/>
+    <path d="M2 8 L22 8"/>
+  </g>
+
+  <!-- Chip: offline-docs -->
+  <rect x="182" y="17" width="105" height="20" rx="10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+  <text x="234" y="31" font-family="Roboto, Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle">offline-docs</text>
+
+  <!-- Refresh icon -->
+  <g transform="translate(296, 15)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M18 8 A8 8 0 1 0 20 13"/>
+    <path d="M18 4 L18 8 L22 8"/>
+  </g>
+
+  <!-- Settings gear icon (right) -->
+  <g transform="translate(1162, 14)">
+    <circle cx="12" cy="12" r="3" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+    <path d="M12 2 L13.5 5.5 L17 4.5 L17.5 8 L21 9 L19.5 12 L21 15 L17.5 16 L17 19.5 L13.5 18.5 L12 22 L10.5 18.5 L7 19.5 L6.5 16 L3 15 L4.5 12 L3 9 L6.5 8 L7 4.5 L10.5 5.5 Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+  </g>
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <rect x="0" y="52" width="280" height="698" fill="#fff"/>
+
+  <!-- Search bar -->
+  <rect x="10" y="66" width="260" height="34" rx="4" fill="#fff" stroke="#bbb" stroke-width="1"/>
+  <circle cx="30" cy="83" r="6" fill="none" stroke="#aaa" stroke-width="1.5"/>
+  <line x1="34" y1="87" x2="38" y2="91" stroke="#aaa" stroke-width="1.5"/>
+  <text x="48" y="88" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#aaa">Search files…</text>
+
+  <!-- File count -->
+  <text x="16" y="118" font-family="Roboto, Arial, sans-serif" font-size="11" fill="#999">47 files</text>
+
+  <!-- Divider -->
+  <line x1="0" y1="126" x2="280" y2="126" stroke="#eee" stroke-width="1"/>
+
+  <!-- File tree (light mode) -->
+  <!-- Folder: api-docs -->
+  <g transform="translate(8, 134)">
+    <polygon points="0,5 5,0 10,5" fill="#aaa" transform="translate(4,0)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f5a623"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f5a623"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#333">api-docs</text>
+  </g>
+
+  <g transform="translate(28, 158)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#444">index.html</text>
+  </g>
+
+  <g transform="translate(28, 182)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#444">auth.html</text>
+  </g>
+
+  <g transform="translate(28, 206)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#444">endpoints.html</text>
+  </g>
+
+  <!-- Folder: guides -->
+  <g transform="translate(8, 230)">
+    <polygon points="0,5 5,0 10,5" fill="#aaa" transform="translate(4,0)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f5a623"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f5a623"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#333">guides</text>
+  </g>
+
+  <!-- Active (selected) file row -->
+  <rect x="0" y="254" width="280" height="24" fill="rgba(25, 118, 210, 0.12)"/>
+  <g transform="translate(28, 256)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#1976d2" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2" font-weight="600">quickstart.html</text>
+  </g>
+
+  <g transform="translate(28, 278)">
+    <rect x="0" y="2" width="10" height="14" rx="1" fill="none" stroke="#aaa" stroke-width="1.2"/>
+    <text x="16" y="15" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#444">setup.html</text>
+  </g>
+
+  <!-- Folder: reference (collapsed) -->
+  <g transform="translate(8, 302)">
+    <polygon points="0,0 5,5 10,0" fill="#aaa" transform="translate(4,3)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f5a623"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f5a623"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#333">reference</text>
+  </g>
+
+  <!-- Folder: examples (collapsed) -->
+  <g transform="translate(8, 326)">
+    <polygon points="0,0 5,5 10,0" fill="#aaa" transform="translate(4,3)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f5a623"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f5a623"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#333">examples</text>
+  </g>
+
+  <!-- Folder: changelog (collapsed) -->
+  <g transform="translate(8, 350)">
+    <polygon points="0,0 5,5 10,0" fill="#aaa" transform="translate(4,3)"/>
+    <rect x="18" y="0" width="12" height="10" rx="1" fill="#f5a623"/>
+    <rect x="14" y="4" width="20" height="14" rx="1" fill="#f5a623"/>
+    <text x="38" y="13" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#333">changelog</text>
+  </g>
+
+  <!-- ═══════════ DRAG HANDLE ═══════════ -->
+  <rect x="280" y="52" width="4" height="698" fill="#e0e0e0"/>
+  <circle cx="282" cy="426" r="3" fill="#bbb"/>
+  <circle cx="282" cy="416" r="3" fill="#bbb"/>
+  <circle cx="282" cy="436" r="3" fill="#bbb"/>
+
+  <!-- ═══════════ EDITOR AREA ═══════════ -->
+  <rect x="284" y="52" width="916" height="698" fill="#fff"/>
+
+  <!-- Tabs bar -->
+  <rect x="284" y="52" width="916" height="40" fill="#fafafa"/>
+  <rect x="284" y="90" width="916" height="1" fill="#e0e0e0"/>
+
+  <!-- Active tab -->
+  <rect x="284" y="52" width="175" height="40" fill="#fff"/>
+  <rect x="284" y="90" width="175" height="2" fill="#1976d2"/>
+  <text x="296" y="77" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">quickstart.html</text>
+  <line x1="448" y1="67" x2="454" y2="73" stroke="#aaa" stroke-width="1.2"/>
+  <line x1="454" y1="67" x2="448" y2="73" stroke="#aaa" stroke-width="1.2"/>
+
+  <!-- Second tab -->
+  <rect x="459" y="52" width="130" height="40" fill="#fafafa"/>
+  <text x="471" y="77" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#666">auth.html</text>
+  <line x1="573" y1="67" x2="579" y2="73" stroke="#aaa" stroke-width="1.2"/>
+  <line x1="579" y1="67" x2="573" y2="73" stroke="#aaa" stroke-width="1.2"/>
+
+  <!-- iFrame content area: documentation page (light) -->
+  <rect x="284" y="93" width="916" height="657" fill="#fff"/>
+
+  <!-- Doc page header -->
+  <rect x="284" y="93" width="916" height="56" fill="#f8f9fa" />
+  <line x1="284" y1="149" x2="1200" y2="149" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="370" y="127" font-family="Roboto, Arial, sans-serif" font-size="20" font-weight="700" fill="#212121">📖 Quickstart Guide</text>
+  <text x="370" y="145" font-family="Roboto, Arial, sans-serif" font-size="12" fill="#999">Last updated: Feb 2026  ·  15 min read</text>
+
+  <!-- Left nav / TOC -->
+  <rect x="284" y="150" width="200" height="600" fill="#fafafa"/>
+  <line x1="484" y1="150" x2="484" y2="750" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="310" y="178" font-family="Roboto, Arial, sans-serif" font-size="11" font-weight="700" fill="#555" letter-spacing="0.5">ON THIS PAGE</text>
+  <text x="310" y="200" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">Introduction</text>
+  <text x="310" y="222" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">Prerequisites</text>
+  <text x="310" y="244" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">Installation</text>
+  <text x="310" y="266" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">Configuration</text>
+  <text x="310" y="288" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#1976d2">First API Call</text>
+  <text x="310" y="310" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#999">Error Handling</text>
+  <text x="310" y="332" font-family="Roboto, Arial, sans-serif" font-size="13" fill="#999">Next Steps</text>
+
+  <!-- Main doc content -->
+  <text x="510" y="185" font-family="Roboto, Arial, sans-serif" font-size="22" font-weight="700" fill="#212121">Introduction</text>
+  <text x="510" y="210" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">This guide walks you through setting up the SDK and making</text>
+  <text x="510" y="228" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">your first API call in under 5 minutes.</text>
+
+  <!-- Code block -->
+  <rect x="510" y="245" width="600" height="70" rx="4" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="526" y="265" font-family="monospace" font-size="12" fill="#333">$ npm install @acme/sdk</text>
+  <text x="526" y="283" font-family="monospace" font-size="12" fill="#333">$ export API_KEY="your_key_here"</text>
+  <text x="526" y="301" font-family="monospace" font-size="12" fill="#333">$ node -e "require('@acme/sdk').ping()"</text>
+
+  <text x="510" y="338" font-family="Roboto, Arial, sans-serif" font-size="22" font-weight="700" fill="#212121">Prerequisites</text>
+  <text x="510" y="363" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">• Node.js 18+ or Python 3.9+</text>
+  <text x="510" y="381" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">• An active API key (see account settings)</text>
+  <text x="510" y="399" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#444">• Network access to api.acme.io</text>
+
+  <!-- Window border -->
+  <rect x="0" y="0" width="1200" height="750" rx="10" fill="none" stroke="#ccc" stroke-width="1"/>
+</svg>
